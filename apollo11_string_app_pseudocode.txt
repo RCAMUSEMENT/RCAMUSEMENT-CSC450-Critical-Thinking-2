@@ -25,7 +25,11 @@ START PROGRAM apollo11_telemetry_app
         PRINT "Enter Spacecraft downlink response string: "
         READ lunarModuleString FROM CONSOLE LINE
 
-        // Combine the inputs
+        // Advanced Sanitization Steps
+        CALL sanitizeString(commandModuleString)
+        CALL sanitizeString(lunarModuleString)
+
+        // Combine the clean inputs
         SET flightTelemetryResult = commandModuleString + lunarModuleString
 
         PRINT "Consolidated Mission Log: [ " + flightTelemetryResult + " ]"
@@ -39,3 +43,15 @@ START PROGRAM apollo11_telemetry_app
     PRINT "Apollo 11 data matrix verification complete. Core pausing..."
 
 END PROGRAM
+
+// Sub-procedure for input verification
+START PROCEDURE sanitizeString(REF inputStr AS STRING)
+    DECLARE cleanStr AS STRING = ""
+    FOR EACH character IN inputStr DO
+        // Verify byte falls inside printable ASCII character space
+        IF (character >= 32 AND character <= 126) THEN
+            APPEND character TO cleanStr
+        END IF
+    END FOR
+    SET inputStr = cleanStr
+END PROCEDURE
