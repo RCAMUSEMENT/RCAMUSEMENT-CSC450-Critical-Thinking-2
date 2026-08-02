@@ -1,0 +1,41 @@
+START PROGRAM apollo11_telemetry_app
+
+    DECLARE commandModuleString AS STRING
+    DECLARE lunarModuleString AS STRING
+    DECLARE flightTelemetryResult AS STRING
+    DECLARE missionPhase AS INTEGER = 1
+
+    PRINT "=================================================="
+    PRINT "   NASA APOLLO 11 TELEMETRY CONCATENATION SYSTEM  "
+    PRINT "=================================================="
+
+    // Run 3 full iterations to test different text lengths
+    WHILE missionPhase <= 3 DO
+        IF missionPhase == 1 THEN
+            PRINT "--- PHASE 1: LAUNCH & TRANSLUNAR INJECTION ---"
+        ELSE IF missionPhase == 2 THEN
+            PRINT "--- PHASE 2: LUNAR DESCENT & SURFACE CODES ---"
+        ELSE IF missionPhase == 3 THEN
+            PRINT "--- PHASE 3: TRANSEARTH RETURN & SPLASHDOWN ---"
+        END IF
+
+        PRINT "Enter Mission Control uplink transmission string: "
+        READ commandModuleString FROM CONSOLE LINE
+
+        PRINT "Enter Spacecraft downlink response string: "
+        READ lunarModuleString FROM CONSOLE LINE
+
+        // Combine the inputs
+        SET flightTelemetryResult = commandModuleString + lunarModuleString
+
+        PRINT "Consolidated Mission Log: [ " + flightTelemetryResult + " ]"
+        PRINT "Total Phase Telemetry Byte Count: " + LENGTH(flightTelemetryResult)
+        PRINT "--------------------------------------------------"
+
+        // Move to the next loop step
+        INCREMENT missionPhase BY 1
+    END WHILE
+
+    PRINT "Apollo 11 data matrix verification complete. Core pausing..."
+
+END PROGRAM
